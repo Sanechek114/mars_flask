@@ -8,8 +8,6 @@ from forms.user import RegisterForm, LoginForm
 from flask_login import LoginManager, login_user
 
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 answers = {
