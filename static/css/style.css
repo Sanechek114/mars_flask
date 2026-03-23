@@ -22,7 +22,6 @@ h2::before {
     display: inline-block;
     width: 100px;
     height: 100px;
-    background-image: url('/static/images/logo.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
