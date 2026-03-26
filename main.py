@@ -4,7 +4,7 @@ from flask import Flask, url_for, request, render_template, redirect
 from data import db_session
 from data.users import User
 from data.jobs import Job
-from forms.user import RegisterForm, LoginForm
+from forms.user import RegisterForm, LoginForm, AddJobForm
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 
@@ -331,10 +331,28 @@ def logout():
     logout_user()
     return redirect("/")
 
-@app.route('/addjob')
+@app.route('/addjob', methods=['GET', 'POST'])
 @login_required
 def add_job():
-    pass
+    form = AddJobForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(Job).filter(Job.job == form.job.data).first()
+        if not user:
+            job = Job()
+            job.team_leader = form.team_leader.data
+            job.job = form.job.data
+            job.work_size = form.work_size.data
+            job.collaborators = form.collaborators.data
+            job.is_finished = False
+
+            db_sess.add(job)
+            db_sess.commit()
+            return redirect("/")
+        return render_template('add_job.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
+    return render_template('add_job.html', title='Добавление роботы', form=form)
 
 @app.route('/load_photo', methods=['GET', 'POST'])
 def load_photo():
