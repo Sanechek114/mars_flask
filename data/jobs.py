@@ -1,10 +1,12 @@
 import datetime
 import sqlalchemy
 from .db_session import SqlAlchemyBase
+from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy import orm
 
 
-class Job(SqlAlchemyBase):
+class Job(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'jobs'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, 
@@ -21,3 +23,4 @@ class Job(SqlAlchemyBase):
 
     def __repr__(self):
         return f"<Job> {self.job}"
+    
